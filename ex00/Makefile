@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: paul <paul@student.42.fr>                  +#+  +:+       +#+         #
+#    By: pgrataco <pgrataco@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/09 18:14:41 by paul              #+#    #+#              #
-#    Updated: 2025/07/18 15:31:25 by paul             ###   ########.fr        #
+#    Updated: 2025/10/21 16:47:11 by pgrataco         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Nom du fichier source
-SRC = main.cpp eazyfind.hpp
+SRC = main.cpp
 
 # Nom du fichier exécutable
 OUT = eazyfind

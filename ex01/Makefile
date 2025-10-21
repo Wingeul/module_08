@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: paul <paul@student.42.fr>                  +#+  +:+       +#+         #
+#    By: pgrataco <pgrataco@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/09 18:14:41 by paul              #+#    #+#              #
-#    Updated: 2025/07/18 15:36:34 by paul             ###   ########.fr        #
+#    Updated: 2025/10/21 16:50:38 by pgrataco         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Nom du fichier source
-SRC = main.cpp Span.hpp Span.cpp
+SRC = main.cpp Span.cpp
 
 # Nom du fichier exécutable
 OUT = span
