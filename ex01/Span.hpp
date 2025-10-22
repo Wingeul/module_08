@@ -6,7 +6,7 @@
 /*   By: paul <paul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 15:36:43 by paul              #+#    #+#             */
-/*   Updated: 2025/07/18 15:38:26 by paul             ###   ########.fr       */
+/*   Updated: 2025/10/22 18:38:29 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,55 @@
 #define SPAN_HPP
 
 
-#include <stdexcept>
+#include <string>
+#include <iostream>
 #include <algorithm>
+#include <exception>
+#include <vector>
+#include <iterator>
+#include <climits>
+
 class Span
 {
-private:
-    unsigned int _size;
-    unsigned int _count;
-    int *_array;
-public:
-    Span(unsigned int size);
-    Span(const Span &other);
-    ~Span();
-    Span &operator=(const Span &other);
+	private:
+		std::vector<int> _storage;
+		unsigned int _size;
+		unsigned int _pos;
+		Span();
 
-    void addNumber(int number);
-    int shortestSpan() const;
-    int longestSpan() const;
+	public:
+		Span(unsigned int N);
+		Span(const Span &src);
 
-    unsigned int getSize() const;
-    unsigned int getCount() const;
+		~Span();
+
+		Span &operator=(const Span &src);
+
+		void addNumber(int number);
+		void addNumber(unsigned int range, time_t seed);
+		unsigned int shortestSpan()const;
+		unsigned int longestSpan()const;
+
+		unsigned int getSize()const;
+		unsigned int getPos()const;
+
+	class	VectorInvalidException : public std::exception
+	{
+		public:
+			virtual const char	*what() const throw();
+	};
+
+	class	ArrayFullException : public std::exception
+	{
+		public:
+			virtual const char	*what() const throw();
+	};
+
+	class	ComparisonInvalidException : public std::exception
+	{
+		public:
+			virtual const char	*what() const throw();
+	};
 };
 
 #endif

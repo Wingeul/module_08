@@ -6,85 +6,137 @@
 /*   By: paul <paul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 15:36:50 by paul              #+#    #+#             */
-/*   Updated: 2025/07/18 15:40:02 by paul             ###   ########.fr       */
+/*   Updated: 2025/10/22 18:54:05 by paul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Span.hpp"
-#include <limits.h>
 
-Span::Span(unsigned int size) : _size(size), _count(0)
+Span::Span(): _size(0), _pos(0)
 {
-    if (size == 0)
-        throw std::invalid_argument("Size must be greater than zero");
-    _array = new int[size];
 }
 
-Span::Span(const Span &other) : _size(other._size), _count(other._count)
+Span::Span(unsigned int N): _size(N), _pos(0)
 {
-    _array = new int[_size];
-    std::copy(other._array, other._array + _count, _array);
+	std::cout << "Span Constructor for size of " << N << " called" << std::endl;
+	this->_storage.reserve(this->getSize());
+}
+
+Span::Span(const Span &src): _size(src.getSize()), _pos(src.getPos())
+{
+	std::cout << "Span Copy Constructor called" << std::endl;
+	*this = src;
 }
 
 Span::~Span()
 {
-    delete[] _array;
+	std::cout << "Span Deconstructor called" << std::endl;
 }
 
-Span &Span::operator=(const Span &other)
+Span	&Span::operator=(const Span &src)
 {
-    if (this != &other)
-    {
-        delete[] _array;
-        _size = other._size;
-        _count = other._count;
-        _array = new int[_size];
-        std::copy(other._array, other._array + _count, _array);
-    }
+	std::cout << "Span Assignation operator called" << std::endl;
+    if (this == &src)
+        return *this;
+	
     return *this;
 }
 
-void Span::addNumber(int number)
+void	Span::addNumber(int number)
 {
-    if (_count >= _size)
-        throw std::out_of_range("Span is full");
-    _array[_count++] = number;
+	if ((this->_pos != 0 && this->_storage.empty() == true) || this->_storage.max_size() < this->getSize())
+		throw (Span::VectorInvalidException());
+	if (this->getPos() + 1 > this->getSize())
+		throw (Span::ArrayFullException());
+	else
+	{
+		this->_pos++;
+		this->_storage.push_back(number);
+	}
 }
 
-int Span::shortestSpan() const
+
+void	Span::addNumber(unsigned int range, time_t seed)
 {
-    if (_count < 2)
-        throw std::logic_error("Not enough elements to find a span");
-    
-    int minSpan = INT_MAX;
-    for (unsigned int i = 0; i < _count - 1; ++i)
-    {
-        for (unsigned int j = i + 1; j < _count; ++j)
-        {
-            int span = abs(_array[i] - _array[j]);
-            if (span < minSpan)
-                minSpan = span;
-        }
-    }
-    return minSpan;
+	srand(seed);
+	for (size_t i = 0; i < range; i++)
+	{
+		try
+		{
+			addNumber(rand());
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << e.what() << '\n';
+		}
+	}
+
 }
 
-int Span::longestSpan() const
+unsigned int	Span::shortestSpan(void) const
 {
-    if (_count < 2)
-        throw std::logic_error("Not enough elements to find a span");
-    
-    int min = *std::min_element(_array, _array + _count);
-    int max = *std::max_element(_array, _array + _count);
-    return max - min;
+	if (this->_pos == 1 || this->_storage.size() == 1)
+		throw (Span::ComparisonInvalidException());
+
+	std::vector<int> v(this->_storage);
+
+	std::sort (v.begin(), v.end());
+
+	unsigned int ret = UINT_MAX;
+	std::vector<int>::iterator temp_it = v.begin();
+	std::vector<int>::iterator temp_it_next = v.begin() + 1;
+	while (temp_it_next != v.end())
+	{
+		if ((unsigned int)(*temp_it_next - *temp_it) < ret)
+			ret = *temp_it_next - *temp_it;
+		++temp_it_next;
+		++temp_it;
+	}
+	return (ret);
 }
 
-unsigned int Span::getSize() const
+unsigned int	Span::longestSpan(void)const
 {
-    return _size;
+	if (this->_pos == 1 || this->_storage.size() == 1)
+		throw (Span::ComparisonInvalidException());
+
+	std::vector<int> v(this->_storage);
+	int low, high;
+
+	std::sort (v.rbegin(), v.rend());
+	high = *v.begin();
+
+	std::sort (v.begin(), v.end());
+	low = *v.begin();
+
+	return (high - low);
 }
 
-unsigned int Span::getCount() const
+// Getter
+unsigned int	Span::getSize() const
 {
-    return _count;
+	return (this->_size);
+}
+
+unsigned int	Span::getPos() const
+{
+	return (this->_pos);
+}
+
+// Setter
+
+// Exceptions
+const char	*Span::VectorInvalidException::what() const throw()
+{
+	return ("Error: Invalid or broken vector");
+}
+
+const char	*Span::ArrayFullException::what() const throw()
+{
+	return ("Error: Array full");
+}
+
+const char	*Span::ComparisonInvalidException::what() const throw()
+{
+	return ("Error: more than one element in vector needed to be compared");
 }
