@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Span.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: paul <paul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: pgrataco <pgrataco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 15:36:50 by paul              #+#    #+#             */
-/*   Updated: 2025/10/22 18:54:05 by paul             ###   ########.fr       */
+/*   Updated: 2025/10/24 16:43:44 by pgrataco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,13 @@ unsigned int	Span::longestSpan(void)const
 	std::vector<int> v(this->_storage);
 	int low, high;
 
-	std::sort (v.rbegin(), v.rend());
-	high = *v.begin();
-
 	std::sort (v.begin(), v.end());
+	high = *v.rbegin();
 	low = *v.begin();
 
 	return (high - low);
 }
 
-// Getter
 unsigned int	Span::getSize() const
 {
 	return (this->_size);
@@ -123,9 +120,6 @@ unsigned int	Span::getPos() const
 	return (this->_pos);
 }
 
-// Setter
-
-// Exceptions
 const char	*Span::VectorInvalidException::what() const throw()
 {
 	return ("Error: Invalid or broken vector");
